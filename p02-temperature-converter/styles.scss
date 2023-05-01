@@ -1,0 +1,77 @@
+html {
+    background-color: rgb(53, 52, 57);
+    height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+.text {
+    color: rgb(197, 197, 197);
+    font-size: 50px;
+    font-family: Arial;
+    text-align: left;
+    width: 450px;
+}
+
+.slider:hover {
+    cursor: pointer;
+  }
+
+.slider {
+  align-self: center;
+  width: 450px;
+
+}
+
+  input[type="range"] {
+    background: none;
+  }
+  
+  input[type=range]::-moz-range-track {
+    background: rgb(210, 11, 147);
+    outline: none;
+    overflow: hidden;
+    border: solid rgb(210, 11, 147);
+    border-width: 6px;
+    border-radius: 30px;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    background: rgb(125, 214, 23);
+    border: none;
+  }
+
+  input[type=range]::-moz-range-progress {
+    border: 0;
+    height: 2px;
+    outline: none;
+  }
+
+  input[type=range]::-webkit-range-track {
+    background: rgb(78, 11, 210);
+    border: transparent;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .outer {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .inner {
+    align-content: center;
+  }
+
+  .container {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
