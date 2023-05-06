@@ -10,7 +10,7 @@ pub struct Props {
 
 #[function_component(NumberInput)]
 pub fn text_input(props: &Props) -> Html {
-    
+
     let oninput = Callback::from(|event: InputEvent| {
         let value = event.clone()
             .target()
