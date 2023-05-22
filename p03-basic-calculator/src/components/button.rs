@@ -66,8 +66,8 @@ pub fn button_press(props: &Props) -> Html {
 
     
     html! {
-            <div style="height: 100%; padding: 0.5vmin; box-sizing: border-box;">
-                <button class="text inner-button" onclick={match props.value {
+            <div class="middle-button" style="height: 100%; padding: 0.5vmin; box-sizing: border-box; border-radius: inherit;">
+                <button class="text inner-button" style="border-radius: inherit;" onclick={match props.value {
                     OuterValue::Value(v) => move |_|{ onclick.emit(v);},
                 }}>{&props.text}</button>
             </div>
