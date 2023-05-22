@@ -44,7 +44,7 @@ html {
     'four   five    six         multiplication'
     'one    two     three       subtraction   '
     'clear  zero    allclear    addition      '
-    'equals equals  equals      equals        ';
+    'modulo openbracket  closebracket      equals        ';
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100%;
@@ -69,3 +69,6 @@ html {
 .subtraction { grid-area: subtraction;}
 .multiplication { grid-area: multiplication;}
 .division { grid-area: division;}
+.modulo { grid-area: modulo;}
+.openbracket { grid-area: openbracket;}
+.closebracket { grid-area: closebracket;}

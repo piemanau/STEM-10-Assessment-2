@@ -29,6 +29,9 @@ pub enum Operation {
     Subtraction,
     Addition,
     Equal,
+    Modulo,
+    OpenBracket,
+    CloseBracket,
     Clear,
     AllClear,
 }
@@ -67,6 +70,9 @@ fn App() -> Html {
                 <div class="button division"><Button value={OuterValue::Value(Value::Operation(Operation::Division))} text="/"/></div>
                 <div class="button multiplication"><Button value={OuterValue::Value(Value::Operation(Operation::Multiplication))} text="*"/></div>
                 <div class="button equals"><Button value={OuterValue::Value(Value::Operation(Operation::Equal))} text="="/></div>
+                <div class="button modulo"><Button value={OuterValue::Value(Value::Operation(Operation::Modulo))} text="%"/></div>
+                <div class="button openbracket"><Button value={OuterValue::Value(Value::Operation(Operation::OpenBracket))} text="("/></div>
+                <div class="button closebracket"><Button value={OuterValue::Value(Value::Operation(Operation::CloseBracket))} text=")"/></div>
                 <div class="button clear"><Button value={OuterValue::Value(Value::Operation(Operation::Clear))} text="C"/></div>
                 <div class="button allclear"><Button value={OuterValue::Value(Value::Operation(Operation::AllClear))} text="AC"/></div>
             </div>

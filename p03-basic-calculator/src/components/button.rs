@@ -41,6 +41,9 @@ pub fn button_press(props: &Props) -> Html {
                 Operation::Equal => sign = "",
                 Operation::Clear => sign = "C",
                 Operation::AllClear => sign = "AC",
+                Operation::Modulo => sign = "%",
+                Operation::OpenBracket => sign = "(",
+                Operation::CloseBracket => sign = ")",
             }
             let inner_html = &(output_element.clone().unwrap().inner_html().clone() + sign);
             if sign == "" {
