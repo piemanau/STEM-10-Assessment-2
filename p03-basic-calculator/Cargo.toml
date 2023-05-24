@@ -10,4 +10,5 @@ yew = { version = "0.20.0", features = ["csr"] }
 wasm-bindgen = "0.2.79"
 web-sys = { version = "0.3.56", features = ["HtmlInputElement"] }
 gloo = "0.8.0"
-evalexpr = "10.0.0"
+evalexpr = "8.1.0"
+fancy-regex = "0.11.0"

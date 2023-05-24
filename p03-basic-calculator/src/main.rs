@@ -1,3 +1,6 @@
+use evalexpr::eval;
+use gloo::console::log;
+use wasm_bindgen::prelude::wasm_bindgen;
 use yew::prelude::*;
 use yew::html;
 
@@ -27,7 +30,7 @@ pub enum Operation {
     Subtraction,
     Addition,
     Equal,
-    Modulo,
+    Decimal,
     OpenBracket,
     CloseBracket,
     Clear,
@@ -52,7 +55,6 @@ fn App() -> Html {
         <div class="calculator">
             <div class="outer">
                 <p class="output text" id="output">{""}</p>
-                <script>{"window.fitText( document.getElementById(\"output\") )"}</script>
                 <div class="button zero"><Button value={OuterValue::Value(Value::Number(0))} text="0"/></div>
                 <div class="button one"><Button value={OuterValue::Value(Value::Number(1))} text="1"/></div>
                 <div class="button two"><Button value={OuterValue::Value(Value::Number(2))} text="2"/></div>
@@ -68,16 +70,23 @@ fn App() -> Html {
                 <div class="button division" style="border-top-right-radius: 50%"><Button value={OuterValue::Value(Value::Operation(Operation::Division))} text="/"/></div>
                 <div class="button multiplication"><Button value={OuterValue::Value(Value::Operation(Operation::Multiplication))} text="*"/></div>
                 <div class="button equals" style="border-bottom-right-radius: 50%"><Button value={OuterValue::Value(Value::Operation(Operation::Equal))} text="="/></div>
-                <div class="button modulo" style="border-bottom-left-radius: 50%"><Button value={OuterValue::Value(Value::Operation(Operation::Modulo))} text="%"/></div>
+                <div class="button decimal" style="border-bottom-left-radius: 50%"><Button value={OuterValue::Value(Value::Operation(Operation::Decimal))} text="."/></div>
                 <div class="button openbracket"><Button value={OuterValue::Value(Value::Operation(Operation::OpenBracket))} text="("/></div>
                 <div class="button closebracket"><Button value={OuterValue::Value(Value::Operation(Operation::CloseBracket))} text=")"/></div>
                 <div class="button clear"><Button value={OuterValue::Value(Value::Operation(Operation::Clear))} text="C"/></div>
                 <div class="button allclear"><Button value={OuterValue::Value(Value::Operation(Operation::AllClear))} text="AC"/></div>
             </div>
         </div>
+
     }
 }
 
+#[wasm_bindgen(module = "/resizetext.js")]
+extern "C" {
+    fn runFitText();
+}
+
 fn main() {
+    log!(eval("1.0/2/2.0").unwrap().to_string());
     yew::Renderer::<App>::new().render();
 }
