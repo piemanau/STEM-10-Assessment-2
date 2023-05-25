@@ -87,7 +87,6 @@ pub fn button_press(props: &Props) -> Html {
                 // }
 
                 // test(&new_numbers);
-
                 //potential regex: https://regex101.com/r/3DrUWA/1
                 //let regex = Regex::new("(?<!\.)\b[0-9]+\b(?!\.)").unwrap();
                 //TODO: add regex to add .0 after all numbers if a decimal is  not already present rather than just .0 at the last number. to test try 1/2/2
@@ -109,7 +108,7 @@ pub fn button_press(props: &Props) -> Html {
 
     
     html! {
-            <div class="middle-button" style="height: 100%; padding: 0.5vmin; box-sizing: border-box; border-radius: inherit;">
+            <div class="middle-button">
                 <button class="text inner-button" style="border-radius: inherit;" onclick={match props.value {
                     OuterValue::Value(v) => move |_|{ onclick.emit(v);},
                 }}>{&props.text}</button>

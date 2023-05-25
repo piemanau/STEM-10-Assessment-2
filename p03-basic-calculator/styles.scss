@@ -1,12 +1,19 @@
 html {
+    height: 100%;
     width: 100%;
+    background-color: #1a2238;
+    --size: var(--min);
+    --min: min(72vh, 140vw)
 }
 
 .calculator {
     position: relative;
-    aspect-ratio: 4 / 6;
-    height: 72vmin;
-    background-color: red;
+    aspect-ratio: 49 / 73; //48 / 72 but both + 1 to account for the padding
+    height: calc(var(--size) + 1vmin);
+    background-color: #37448c;
+    border-radius: calc(50%/4) / calc(50%/6);
+    padding: 0.5vmin;
+    box-sizing: border-box;
 }
 
 .button {
@@ -18,9 +25,13 @@ html {
 }
 
 .middle-button {
+    height: 100%;
+    padding: calc(var(--min) / 72 * 0.5);
+    box-sizing: border-box;
+    border-radius: inherit;
     :hover {
         cursor: pointer;
-      }
+    }
 }
 
 .inner-button {
@@ -28,23 +39,41 @@ html {
     width: 100%;
     height: 100%;
     border: none;
-    color: #fff;
-    background-color: blue;
+    color: #9daaf2;
+    background-color: #1a2238;
     padding: 0;
 }
 
 .text {
-    font-size: 4vmin;
+    font-size: calc(var(--min) / 72 * 4);
+    color: #9daaf2;
+    font-family: 'Arial Rounded MT Bold';
+}
+
+.inner-output {
+    width: 100%;
+    height: 100%;
+    margin: 0%;
+    text-align: right;
+    display: inline-block;
+    line-height: calc(var(--min) / 72 * 11);
+    vertical-align: middle;
 }
 
 .output {
-    padding: 0%;
-    margin: 0%;
     width: 100%;
-    text-align: right;
-    display: inline-block;
-    line-height: normal;
-    vertical-align: middle;
+    height: 100%;
+    padding: 0% calc(var(--min) / 72 * 3) 0 calc(var(--min) / 72 * 3);
+    margin: 0%;
+    box-sizing: border-box;
+    background-color: #1a2238;
+    border-radius: 12.5%/50%;
+}
+
+.outer-output {
+    padding: calc(var(--min) / 72 * 0.5);
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .outer {
@@ -59,8 +88,8 @@ html {
     'modulo openbracket  closebracket      equals        ';
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    width: 100%;
-    height: 100%;
+    aspect-ratio: 4 / 6;
+    height: var(--size);
 }
 
 .zero { grid-area: zero;}
@@ -73,7 +102,7 @@ html {
 .seven { grid-area: seven;}
 .eight { grid-area: eight;}
 .nine { grid-area: nine;}
-.output { grid-area: output;}
+.outer-output { grid-area: output;}
 .clear { grid-area: clear;}
 .allclear { grid-area: allclear;}
 .equals { grid-area: equals;}

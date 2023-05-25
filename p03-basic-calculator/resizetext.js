@@ -12,7 +12,7 @@ function fitText(el, maxHeight) {
   let resize = function() {
     let cs = window.getComputedStyle(el);
     let w = getTextWidth(el.innerText, cs.fontWeight + " 20px " + cs.fontFamily);
-    let r = ((el.clientWidth / w[0]) * 20 - 1);
+    let r = ((el.clientWidth / w[0]) * 20);
 
     let m = maxHeight(el);
     if(r > m) el.style.fontSize = m + 'px';
