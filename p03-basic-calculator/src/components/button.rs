@@ -1,5 +1,3 @@
-use std::slice::SliceIndex;
-
 use fancy_regex::Regex;
 use gloo::{utils::document, console::log};
 use yew::{Properties, Html, Callback, html, function_component};
@@ -77,15 +75,16 @@ pub fn button_press(props: &Props) -> Html {
                 let mut offset = 0;
                 for number in numbers {
                     new_output = (&new_output[0..number.as_ref().unwrap().start() + offset]).to_string() + new_numbers.get(index).unwrap().as_str() + &new_output[number.as_ref().unwrap().end() + offset..new_output.len()];
+                    //calculate the ranges first so the number is always 0 or positive because the type is unsigned meaning thet is the value goes into negative at anypoint the number will overflow into the other side of the min/max
                     offset += new_numbers.get(index).unwrap().len() - (number.as_ref().unwrap().end() - number.as_ref().unwrap().start());
                     index += 1;
                 }
 
                 log!("new output:", &new_output);
 
-                fn test<T: AsRef<str>>(inp: &[T]) {
-                    for x in inp { log!(x.as_ref()) }
-                }
+                // fn test<T: AsRef<str>>(inp: &[T]) {
+                //     for x in inp { log!(x.as_ref()) }
+                // }
 
                 // test(&new_numbers);
 
