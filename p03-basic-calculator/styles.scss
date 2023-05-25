@@ -80,12 +80,12 @@ html {
     position: absolute;
     display: grid;
     grid-template-areas:
-    'output output  output      output        '
-    'seven  eight   nine        division      '
-    'four   five    six         multiplication'
-    'one    two     three       subtraction   '
-    'clear  zero    allclear    addition      '
-    'modulo openbracket  closebracket      equals        ';
+    'output output      output          output        '
+    'seven  eight       nine            division      '
+    'four   five        six             multiplication'
+    'one    two         three           subtraction   '
+    'clear  zero        allclear        addition      '
+    'modulo openbracket  closebracket   equals        ';
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
     aspect-ratio: 4 / 6;

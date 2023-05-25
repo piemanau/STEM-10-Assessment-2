@@ -49,7 +49,6 @@ pub fn button_press(props: &Props) -> Html {
             let inner_html = &(output_element.clone().unwrap().inner_html().clone() + sign);
             if sign == "" {
                 let output;
-                log!("innerhtml:", inner_html.as_str());
 
                 //matches any number
                 let regex = Regex::new("[-+]?([0-9]*[.])?[0-9]*([eE][-+]?[0-9]+)?").unwrap();
@@ -79,8 +78,6 @@ pub fn button_press(props: &Props) -> Html {
                     offset += new_numbers.get(index).unwrap().len() - (number.as_ref().unwrap().end() - number.as_ref().unwrap().start());
                     index += 1;
                 }
-
-                log!("new output:", &new_output);
 
                 // fn test<T: AsRef<str>>(inp: &[T]) {
                 //     for x in inp { log!(x.as_ref()) }

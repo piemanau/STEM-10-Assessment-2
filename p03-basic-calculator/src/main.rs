@@ -1,5 +1,3 @@
-use evalexpr::eval;
-use gloo::console::log;
 use wasm_bindgen::prelude::wasm_bindgen;
 use yew::prelude::*;
 use yew::html;
@@ -89,6 +87,5 @@ extern "C" {
 }
 
 fn main() {
-    log!(eval("1.0/2/2.0").unwrap().to_string());
     yew::Renderer::<App>::new().render();
 }
