@@ -11,6 +11,10 @@ pub struct Props {
     pub text: String,
 }
 
+lazy_static::lazy_static! {
+    static ref REGEX: Regex = Regex::new("[-+]?([0-9]*[.])?[0-9]*([eE][-+]?[0-9]+)?").unwrap();
+}
+
 #[function_component(Button)]
 pub fn button_press(props: &Props) -> Html {
 
@@ -51,10 +55,12 @@ pub fn button_press(props: &Props) -> Html {
                 let output;
 
                 //matches any number
-                let regex = Regex::new("[-+]?([0-9]*[.])?[0-9]*([eE][-+]?[0-9]+)?").unwrap();
-                let numbers = regex.find_iter(inner_html.as_str());
+                let numbers = REGEX.find_iter(inner_html.as_str());
 
                 let mut new_numbers: Vec<String> = vec![];
+                let mut new_output = inner_html.clone();
+                let mut index = 0;
+                let mut offset = 0;
                 for number in numbers {
                     let base = number.as_ref().unwrap().as_str().to_owned().clone();
                     if number.as_ref().unwrap().as_str().ends_with(".") {
@@ -66,27 +72,11 @@ pub fn button_press(props: &Props) -> Html {
                         let both = base + ".0";
                         new_numbers.push(both.clone());
                     }
-                }
-
-                let numbers = regex.find_iter(inner_html.as_str());
-                let mut new_output = inner_html.clone();
-                let mut index = 0;
-                let mut offset = 0;
-                for number in numbers {
                     new_output = (&new_output[0..number.as_ref().unwrap().start() + offset]).to_string() + new_numbers.get(index).unwrap().as_str() + &new_output[number.as_ref().unwrap().end() + offset..new_output.len()];
                     //calculate the ranges first so the number is always 0 or positive because the type is unsigned meaning thet is the value goes into negative at anypoint the number will overflow into the other side of the min/max
                     offset += new_numbers.get(index).unwrap().len() - (number.as_ref().unwrap().end() - number.as_ref().unwrap().start());
                     index += 1;
                 }
-
-                // fn test<T: AsRef<str>>(inp: &[T]) {
-                //     for x in inp { log!(x.as_ref()) }
-                // }
-
-                // test(&new_numbers);
-                //potential regex: https://regex101.com/r/3DrUWA/1
-                //let regex = Regex::new("(?<!\.)\b[0-9]+\b(?!\.)").unwrap();
-                //TODO: add regex to add .0 after all numbers if a decimal is  not already present rather than just .0 at the last number. to test try 1/2/2
 
                 //TODO: potentialy add an option for a full error or just something like "Could not calculate."
                 match eval_float(&new_output) {
@@ -110,10 +100,11 @@ pub fn button_press(props: &Props) -> Html {
 
     
     html! {
-            <div class="middle-button">
-                <button class="text inner-button" style="border-radius: inherit;" onclick={match props.value {
-                    OuterValue::Value(v) => move |_|{ onclick.emit(v);},
-                }}>{&props.text}</button>
+        //html to add for each button.
+        <div class="middle-button">
+            <div class="inner-button" style="border-radius: inherit;" onclick={match props.value {OuterValue::Value(v) => move |_|{ onclick.emit(v);},}}>
+                <p class="text center" style="user-select: none; margin: 0;">{&props.text}</p>
             </div>
+        </div>
     }
 }

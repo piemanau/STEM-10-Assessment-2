@@ -1,3 +1,5 @@
+"use strict";
+
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
