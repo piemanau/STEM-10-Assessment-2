@@ -1,5 +1,5 @@
 use fancy_regex::Regex;
-use gloo::{utils::document, console::log};
+use gloo::{utils::document, console::{warn}};
 use yew::{Properties, Html, Callback, html, function_component};
 use evalexpr::*;
 
@@ -20,7 +20,7 @@ pub fn button_press(props: &Props) -> Html {
         let mut inner_value = None;
         let mut inner_operation = None;
 
-        if output_element.clone().unwrap().inner_html().starts_with("Error: ") {
+        if output_element.clone().unwrap().inner_html().starts_with("Could not calculate. Check console for error.") {
             document().get_element_by_id("output").unwrap().set_inner_html("");
         }
 
@@ -87,9 +87,14 @@ pub fn button_press(props: &Props) -> Html {
                 //potential regex: https://regex101.com/r/3DrUWA/1
                 //let regex = Regex::new("(?<!\.)\b[0-9]+\b(?!\.)").unwrap();
                 //TODO: add regex to add .0 after all numbers if a decimal is  not already present rather than just .0 at the last number. to test try 1/2/2
+
+                //TODO: potentialy add an option for a full error or just something like "Could not calculate."
                 match eval_float(&new_output) {
                     Ok(v) => output = v.to_string(),
-                    Err(e) => output = String::from("Error: ") + e.to_string().as_str(),
+                    Err(e) => output = {
+                        warn!(e.to_string());
+                        String::from("Could not calculate. Check console for error.")
+                    },
                 }
                 output_element.unwrap().set_inner_html((&output).as_str());
             } else if sign == "AC" {

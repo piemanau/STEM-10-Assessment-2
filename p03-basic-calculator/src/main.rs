@@ -50,7 +50,7 @@ pub enum OuterValue {
 #[function_component]
 fn App() -> Html {
     html! {
-        <div class="calculator">
+        <div class="calculator center">
             <div class="outer">
                 <div class="outer-output">
                     <p class="output text" style="border-bottom-right-radius: 2.5% 10%; border-bottom-left-radius: 2.5% 10%;"><p class="inner-output text" id="output">{""}</p></p>

@@ -1,9 +1,20 @@
+@font-face {
+    font-family: digitAlt;
+    src: url(digitalt.woff);
+}
+
 html {
     height: 100%;
     width: 100%;
     background-color: #1a2238;
+    margin: 0;
+    padding: 0;
     --size: var(--min);
-    --min: min(72vh, 140vw)
+    --min: min(72vh, 147.5vw)
+}
+
+body {
+    margin: 0;
 }
 
 .calculator {
@@ -30,7 +41,10 @@ html {
     box-sizing: border-box;
     border-radius: inherit;
     :hover {
+        transition: 200ms ease-in-out;
         cursor: pointer;
+        background-color: rgb(37, 48, 79);
+        color: #acc0f5;
     }
 }
 
@@ -45,9 +59,9 @@ html {
 }
 
 .text {
-    font-size: calc(var(--min) / 72 * 4);
+    font-size: calc(var(--min) / 72 * 5);
     color: #9db4f2;
-    font-family: 'Arial Rounded MT Bold';
+    font-family: digitAlt, sans-serif;
 }
 
 .inner-output {
@@ -90,6 +104,47 @@ html {
     grid-template-rows: repeat(6, 1fr);
     aspect-ratio: 4 / 6;
     height: var(--size);
+}
+
+.spinner {
+    animation: rotate 2s linear infinite;
+    width: calc(var(--min) / 72 * 10);
+    height: calc(var(--min) / 72 * 10);
+    
+    & .path {
+      stroke: #9db4f2;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+    
+  }
+  
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+  
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .zero { grid-area: zero;}
