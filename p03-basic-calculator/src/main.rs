@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::wasm_bindgen;
-use yew::prelude::*;
 use yew::html;
+use yew::prelude::*;
 
 use crate::components::button::Button;
 
@@ -13,13 +13,11 @@ pub enum State {
     NumberTwo(CustomNumber),
 }
 
-
 #[derive(PartialEq, Clone)]
 pub enum CustomNumber {
     Number(f64),
     None,
 }
-
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum Operation {
@@ -45,7 +43,6 @@ pub enum Value {
 pub enum OuterValue {
     Value(Value),
 }
-
 
 #[function_component]
 fn App() -> Html {
