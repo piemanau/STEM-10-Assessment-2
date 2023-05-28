@@ -13,3 +13,10 @@ gloo = "0.8.0"
 evalexpr = "8.1.0"
 fancy-regex = "0.11.0"
 lazy_static = "1.4.0"
+
+[profile.release]
+# more info https://rustwasm.github.io/book/reference/code-size.html#optimizing-builds-for-code-size
+# inlines and prunes functions for smaller and faster binary
+lto = true
+# optimise for size rather than speed to speed up loading time
+opt-level = 's'
