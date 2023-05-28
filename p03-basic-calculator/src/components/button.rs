@@ -106,19 +106,28 @@ pub fn button_press(props: &Props) -> Html {
             } else if sign == "AC" {
                 output_element.unwrap().set_inner_html("");
             } else if sign == "C" {
-                output_element.unwrap().set_inner_html(
-                    &(document()
-                        .get_element_by_id("output")
-                        .unwrap()
-                        .inner_html()
-                        .as_str()[0..document()
-                        .get_element_by_id("output")
-                        .unwrap()
-                        .inner_html()
-                        .as_str()
-                        .len()
-                        - 1]),
-                );
+                if document()
+                    .get_element_by_id("output")
+                    .unwrap()
+                    .inner_html()
+                    .as_str()
+                    .len()
+                    > 0
+                {
+                    output_element.unwrap().set_inner_html(
+                        &(document()
+                            .get_element_by_id("output")
+                            .unwrap()
+                            .inner_html()
+                            .as_str()[0..document()
+                            .get_element_by_id("output")
+                            .unwrap()
+                            .inner_html()
+                            .as_str()
+                            .len()
+                            - 1]),
+                    );
+                }
             } else {
                 output_element
                     .unwrap()
