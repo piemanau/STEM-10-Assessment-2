@@ -42,12 +42,15 @@ body {
     box-sizing: border-box;
     border-radius: inherit;
     color: #9db4f2;
+
+    @media (hover: hover) {
     :hover {
         transition: all 100ms ease-in;
         cursor: pointer;
         background-color: rgb(37, 48, 79);
         color: #acc0f5;
     }
+}
     :active {
         transition: all 0s ease-in;
         background-color: rgb(43, 55, 87);
