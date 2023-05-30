@@ -6,47 +6,28 @@ fn main() {
     println!("{}", convert_from_base_to_base(String::from("235"), 8, 16, base_string));
 }
 
-// function for any base to any other base. potential function: https://stackoverflow.com/questions/3973685/python-homework-converting-any-base-to-any-base
+fn convert_from_base_ten(mut number: u32, base: u32, base_key: &str) -> String {
+    if number == 0 {return base_key[0..1].to_owned();}
 
-fn convert_from_base_ten(number: u32, base: u32, base_key: &str) -> String {
-    let mut divisor = base;
     let mut output = String::from("");
-    let mut place_values = 1;
-    let mut pre_output = number as f32;
-    while number / divisor >= 1 {
-        place_values += 1;
-        divisor *= base;
-    }
-    divisor /= base;
-    pre_output /= divisor as f32;
-    let num = pre_output.floor() as usize;
-    output += &base_key[num..num + 1];
 
-    while place_values > 1 {
-        let num = pre_output.floor();
-        pre_output -= num;
-        pre_output *= base as f32;
-        let num = pre_output.floor() as usize;
-        output += &base_key[num..num + 1];
-        place_values -= 1;
+    while number != 0 {
+        let l;
+        (number, l) = (number / base, number % base);
+        output = String::from(&base_key[l as usize..l as usize+ 1 as usize]) + &output;
     }
 
     output
 }
 
-// convert to base 10 https://mathbits.com/MathBits/CompSci/Introduction/tobase10.htm
-
-//TODO: fix
 fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u32 {
-    let mut multiplier = base.pow(number.len() as u32);
     let mut output: u32 = 0;
 
-    multiplier /= base;
-
     for character in number.chars() {
+        //remove unwrap
         let num = base_key.find(character).unwrap();
-        output += num as u32 * multiplier;
-        multiplier /= base;
+        output *= base;
+        output += num as u32;
     }
 
     output
