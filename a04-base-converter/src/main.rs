@@ -1,9 +1,3 @@
-use gloo::{
-    console::{log, warn},
-    utils::document,
-};
-use wasm_bindgen::JsCast;
-use web_sys::{HtmlInputElement, InputEvent};
 use yew::prelude::*;
 
 mod components;
@@ -17,21 +11,6 @@ pub enum Output {
 
 #[function_component]
 fn App() -> Html {
-    let base_key = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".trim();
-    let oninput = Callback::from(|event: InputEvent| {
-        let value = event
-            .clone()
-            .target()
-            .unwrap()
-            .unchecked_into::<HtmlInputElement>()
-            .value();
-        let _ = document()
-                    .get_element_by_id("second")
-                    .unwrap()
-                    .set_attribute("value", &convert_from_base_to_base(value, 16, 8, base_key));
-        
-    });
-
     html! {
         <div>
             <NumberInput name="First" output={Output::Value(String::from("Second"))}/>
@@ -77,12 +56,13 @@ fn convert_from_base_to_base(
     number: String,
     base_in: u32,
     base_out: u32,
-    base_key: &str,
+    base_key_in: &str,
+    base_key_out: &str,
 ) -> String {
     convert_from_base_ten(
-        convert_to_base_ten(number, base_in, base_key),
+        convert_to_base_ten(number, base_in, base_key_in),
         base_out,
-        base_key,
+        base_key_out,
     )
 }
 
@@ -107,7 +87,7 @@ mod tests {
     fn test_convert_from_base_to_base() {
         let base_key = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".trim();
         assert_eq!(
-            convert_from_base_to_base(String::from("144"), 8, 16, base_key),
+            convert_from_base_to_base(String::from("144"), 8, 16, base_key, base_key),
             String::from("64")
         );
     }
@@ -122,7 +102,7 @@ mod tests {
     fn test_convert_from_base_to_base_with_letter() {
         let base_key = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".trim();
         assert_eq!(
-            convert_from_base_to_base(String::from("FF"), 16, 20, base_key),
+            convert_from_base_to_base(String::from("FF"), 16, 20, base_key, base_key),
             String::from("CF")
         );
     }
