@@ -38,7 +38,7 @@ fn App() -> Html {
 }
 
 
-// Main function, where the code starts and calls the app.
+// Main function, where the code starts and runs the app.
 fn main() {
     yew::Renderer::<App>::new().render();
 }
