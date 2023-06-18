@@ -1,18 +1,45 @@
 use wasm_bindgen::prelude::wasm_bindgen;
 use web_sys::Element;
 use yew::prelude::*;
+use yew_router::prelude::*;
 
 mod components;
 
 use crate::components::number_input::*;
+
+#[derive(Clone, Routable, PartialEq)]
+enum Route {
+    #[at("/")]
+    Home,
+    #[at("/instructions")]
+    Instructions,
+}
 
 #[derive(PartialEq, Clone)]
 pub enum Output {
     Value(String),
 }
 
+fn switch(routes: Route) -> Html {
+    match routes {
+        Route::Home => home(),
+        Route::Instructions => html! {
+           <p>{"Instructions"}</p>
+        }
+    }
+}
+
 #[function_component]
 fn App() -> Html {
+    html! {
+        <BrowserRouter>
+            <Switch<Route> render={switch} /> // <- must be child of <BrowserRouter>
+        </BrowserRouter>
+    }
+}
+
+
+fn home() -> Html {
     html! {
         <div>
             <NumberInput name="Number One" value="" output={Output::Value(String::from("NumberTwo"))}/>
