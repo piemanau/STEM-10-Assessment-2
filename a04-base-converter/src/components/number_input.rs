@@ -1,43 +1,111 @@
-use gloo::{utils::document, console::log};
-use wasm_bindgen::{JsCast, prelude::wasm_bindgen};
-use web_sys::{InputEvent, HtmlInputElement, Element};
-use yew::{Properties, function_component, Html, Callback, html};
+use gloo::{console::log, utils::document};
+use wasm_bindgen::JsCast;
+use web_sys::{HtmlInputElement, InputEvent};
+use yew::{function_component, html, Callback, Html, Properties};
 
-use crate::{convert_from_base_to_base, Output, components::number_input};
+use crate::{convert_from_base_to_base, updateValue, Output};
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub name: String,
     pub output: Output,
+    pub value: String,
 }
 
 #[function_component(NumberInput)]
 pub fn text_input(props: &Props) -> Html {
-
-    let base_key = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".trim();
     let oninput = Callback::from(|tuple: (InputEvent, String)| {
-        let value = tuple.0
+
+        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
+
+        if base_in == String::from("1") || base_out == String::from("1") {
+            return;
+        }
+
+        if tuple.1.starts_with("Both") {
+        
+        //FIXME: top box converts from base a to base b and bottom box converts from base a to base b whereas it should convert from base b to base a
+        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
+
+        let prev_base_key_in = document().get_element_by_id("basekeyin").unwrap().get_attribute("prevvalue");
+        let prev_base_key_out = document().get_element_by_id("basekeyout").unwrap().get_attribute("prevvalue");
+        let prev_base_in = document().get_element_by_id("basein").unwrap().get_attribute("prevvalue");
+        let prev_base_out = document().get_element_by_id("baseout").unwrap().get_attribute("prevvalue");
+
+        let outputs = tuple.1.split_whitespace().collect::<Vec<&str>>();
+        let outputs = (outputs.get(1).unwrap().to_ascii_lowercase(), outputs.get(2).unwrap().to_ascii_lowercase());
+
+        let value_one = document().get_element_by_id(&outputs.0).unwrap();
+        let value_two = document().get_element_by_id(&outputs.1).unwrap();
+
+            updateValue(
+                document()
+                    .get_element_by_id(&outputs.0)
+                    .unwrap(),
+                convert_from_base_to_base(value_one.unchecked_into::<HtmlInputElement>().value(), prev_base_in.unwrap().parse().unwrap(), base_in.parse::<u32>().unwrap().clone(), &prev_base_key_in.unwrap(), &base_key_in),
+            );
+
+            updateValue(
+                document()
+                    .get_element_by_id(&outputs.1)
+                    .unwrap(),
+                convert_from_base_to_base(value_two.unchecked_into::<HtmlInputElement>().value(), prev_base_out.unwrap().parse().unwrap(), base_out.parse().unwrap(), &prev_base_key_out.unwrap(), &base_key_out),
+            );
+
+        log!("Updated.");
+        } else {
+        let value = tuple
+            .0
             .clone()
             .target()
             .unwrap()
             .unchecked_into::<HtmlInputElement>()
             .value();
-        //FIXME: top box converts from base a to base b and bottom box converts from base a to base b whereas it should convert from base b to base a
-        number_input::updateValue(document().get_element_by_id(tuple.1.to_lowercase().clone().as_ref()).unwrap(), convert_from_base_to_base(value, 16, 8, base_key, base_key));
         
-        log!("Updated.");
-    });
-    
-        html! {
-            <div>
-                <p>{props.name.clone()}</p>
-                <input type="text" name={props.name.clone().to_lowercase()} id={props.name.clone().to_lowercase()} oninput={match props.output.clone() {Output::Value(v) => move |event: InputEvent| { oninput.emit((event, v.clone()));}}} />
-            </div>
-        
-    }
-}
+        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
 
-#[wasm_bindgen(module = "/updatevalue.js")]
-extern "C" {
-    fn updateValue(element: Element, value: String);
+        if tuple.0.target().unwrap().unchecked_into::<HtmlInputElement>().id() == String::from("numberone") {
+
+            updateValue(
+                document()
+                    .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                    .unwrap(),
+                convert_from_base_to_base(value, base_in.parse().unwrap(), base_out.parse().unwrap(), &base_key_in, &base_key_out),
+            );
+        } else {
+            updateValue(
+                document()
+                    .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                    .unwrap(),
+                convert_from_base_to_base(value, base_out.parse().unwrap(), base_in.parse().unwrap(), &base_key_out, &base_key_in),
+            );
+        }
+
+        log!("Updated.");
+        }
+        //update previous values
+        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
+            let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
+            let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
+            let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
+
+        let _prev_base_key_in = document().get_element_by_id("basekeyin").unwrap().set_attribute("prevvalue", &base_key_in);
+        let _prev_base_key_out = document().get_element_by_id("basekeyout").unwrap().set_attribute("prevvalue", &base_key_out);
+        let _prev_base_in = document().get_element_by_id("basein").unwrap().set_attribute("prevvalue", &base_in);
+        let _prev_base_out = document().get_element_by_id("baseout").unwrap().set_attribute("prevvalue", &base_out);
+    });
+
+    html! {
+            <div style="display: flex; align-items: center;">
+                <p style="width: 5vw;">{props.name.clone()}</p>
+                <input type="text" value={props.value.clone()} prevvalue={props.value.clone()} placeholder={props.name.clone()} name={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} id={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} oninput={match props.output.clone() {Output::Value(v) => move |event: InputEvent| { oninput.emit((event, v.clone()));}}} />
+            </div>
+    }
 }

@@ -1,3 +1,5 @@
+use wasm_bindgen::prelude::wasm_bindgen;
+use web_sys::Element;
 use yew::prelude::*;
 
 mod components;
@@ -13,8 +15,12 @@ pub enum Output {
 fn App() -> Html {
     html! {
         <div>
-            <NumberInput name="First" output={Output::Value(String::from("Second"))}/>
-            <NumberInput name="Second" output={Output::Value(String::from("First"))}/>
+            <NumberInput name="Number One" value="" output={Output::Value(String::from("NumberTwo"))}/>
+            <NumberInput name="Base In" value="10" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
+            <NumberInput name="Base Key In" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
+            <NumberInput name="Number Two" value="" output={Output::Value(String::from("NumberOne"))}/>
+            <NumberInput name="Base Out" value="2" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
+            <NumberInput name="Base Key Out" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
         </div>
     }
 }
@@ -23,7 +29,7 @@ fn main() {
     yew::Renderer::<App>::new().render();
 }
 
-fn convert_from_base_ten(mut number: u32, base: u32, base_key: &str) -> String {
+fn convert_from_base_ten(mut number: u128, base: u32, base_key: &str) -> String {
     if number == 0 {
         return base_key[0..1].to_owned();
     }
@@ -32,21 +38,21 @@ fn convert_from_base_ten(mut number: u32, base: u32, base_key: &str) -> String {
 
     while number != 0 {
         let l;
-        (number, l) = (number / base, number % base);
+        (number, l) = (number / base as u128, number % base as u128);
         output = String::from(&base_key[l as usize..l as usize + 1 as usize]) + &output;
     }
 
     output
 }
 
-fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u32 {
-    let mut output: u32 = 0;
+fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u128 {
+    let mut output: u128 = 0;
 
     for character in number.chars() {
         //TODO: remove unwrap
         let num = base_key.find(character).unwrap();
-        output *= base;
-        output += num as u32;
+        output *= base as u128;
+        output += num as u128;
     }
 
     output
@@ -64,6 +70,11 @@ fn convert_from_base_to_base(
         base_out,
         base_key_out,
     )
+}
+
+#[wasm_bindgen(module = "/updatevalue.js")]
+extern "C" {
+    fn updateValue(element: Element, value: String);
 }
 
 #[cfg(test)]
