@@ -5,24 +5,30 @@ use yew::{function_component, html, Callback, Html, Properties};
 
 use crate::{runFitText, Operation, OuterValue, Value};
 
+// Parameters I can pass in to use for each individual button
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub value: OuterValue,
     pub text: String,
 }
 
+// Making a regex variable this way to save allocations, just good practise. It only allocated on first use.
 lazy_static::lazy_static! {
     static ref REGEX: Regex = Regex::new("[-+]?([0-9]*[.])?[0-9]*([eE][-+]?[0-9]+)?").unwrap();
 }
 
 #[function_component(Button)]
 pub fn button_press(props: &Props) -> Html {
+    // When the button is clicked it finds what button was clicked and does what it needs to.
     let onclick = Callback::from(|value: Value| {
+        // Gets the output element
         let output_element = document().get_element_by_id("output");
 
+        // Gets some variables ready
         let mut inner_value = None;
         let mut inner_operation = None;
 
+        // Clears the output if the last button press equaled in an error
         if output_element
             .clone()
             .unwrap()
@@ -35,24 +41,29 @@ pub fn button_press(props: &Props) -> Html {
                 .set_inner_html("");
         }
 
+        // Sets the number or operation based on what button was clicked
         match value.clone() {
             Value::Number(n) => inner_value = Some(n),
             Value::Operation(o) => inner_operation = Some(o),
         }
 
+        // If a number was pressed it just adds that to the end
         if inner_value != None {
             let inner_html = &(output_element.clone().unwrap().inner_html().clone()
                 + inner_value.unwrap().to_string().as_str());
             output_element
                 .unwrap()
                 .set_inner_html((&inner_html).as_str());
+        // If it was an operation
         } else if inner_operation != None {
+            // Gets the button that was pressed, including signs
             let sign;
             match inner_operation.unwrap() {
                 Operation::Addition => sign = "+",
                 Operation::Subtraction => sign = "-",
                 Operation::Multiplication => sign = "*",
                 Operation::Division => sign = "/",
+                // Equals is set to nothing otherwise it wont calculate
                 Operation::Equal => sign = "",
                 Operation::Clear => sign = "C",
                 Operation::AllClear => sign = "AC",
@@ -60,15 +71,20 @@ pub fn button_press(props: &Props) -> Html {
                 Operation::OpenBracket => sign = "(",
                 Operation::CloseBracket => sign = ")",
             }
+            // Adds the sign to the end of the output
             let inner_html = &(output_element.clone().unwrap().inner_html().clone() + sign);
+
+            // If the sign is equals it makes all the numbers floats and then calculates it and sets the output
             if sign == "" {
                 let output;
 
-                //matches any number
+                //Matches any number, example: 0, 1. or 2.1
                 let numbers = REGEX.find_iter(inner_html.as_str());
 
+                // Starts to turn all numbers to float style
                 let mut new_numbers: Vec<String> = vec![];
                 let mut new_output = inner_html.clone();
+                // Index and offset to add new numbers to the new string correctly
                 let mut index = 0;
                 let mut offset = 0;
                 for number in numbers {
@@ -92,7 +108,7 @@ pub fn button_press(props: &Props) -> Html {
                     index += 1;
                 }
 
-                //TODO: potentialy add an option for a full error or just something like "Could not calculate."
+                // Calculates the answer, if it cant be calculated then it put the error in the console.
                 match eval_float(&new_output) {
                     Ok(v) => output = v.to_string(),
                     Err(e) => {
@@ -102,8 +118,11 @@ pub fn button_press(props: &Props) -> Html {
                         }
                     }
                 }
+
+                // Sets the output to show the user
                 output_element.unwrap().set_inner_html((&output).as_str());
             } else if sign == "AC" {
+                // Clear the output
                 output_element.unwrap().set_inner_html("");
             } else if sign == "C" {
                 if document()

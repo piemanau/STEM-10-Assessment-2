@@ -47,11 +47,15 @@ pub enum OuterValue {
 #[function_component]
 fn App() -> Html {
     html! {
+        // Outer div, mainly for centering, see the scss
         <div class="calculator center">
             <div class="outer">
+                // Output for the calculation
                 <div class="outer-output">
                     <p class="output text" style="border-bottom-right-radius: 2.5% 10%; border-bottom-left-radius: 2.5% 10%;"><p class="inner-output text" id="output">{""}</p></p>
                 </div>
+
+                // Adds all the button, including numbers and operations
                 <div class="button zero"><Button value={OuterValue::Value(Value::Number(0))} text="0"/></div>
                 <div class="button one"><Button value={OuterValue::Value(Value::Number(1))} text="1"/></div>
                 <div class="button two"><Button value={OuterValue::Value(Value::Number(2))} text="2"/></div>
@@ -78,11 +82,13 @@ fn App() -> Html {
     }
 }
 
+// Lets me run JS to fit the text properly
 #[wasm_bindgen(module = "/resizetext.js")]
 extern "C" {
     fn runFitText();
 }
 
+// Where the app starts and runs the code.
 fn main() {
     yew::Renderer::<App>::new().render();
 }
