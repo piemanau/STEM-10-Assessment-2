@@ -24,7 +24,13 @@ fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => home(),
         Route::Instructions => html! {
-           <p>{"Instructions"}</p>
+            <div>
+                <h1>{"Base Converter Instructions"}</h1>
+                <p>{"Number one and number two are the numbers you are converting to and from."}</p>
+                <p>{"Base in and base out are the bases you are convertig to and from, base 10 to base 2 is decimal to binary."}</p>
+                <p>{"Base key in and base key out are the \"keys\" you use to convert to and froms. \"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
+                <button><Link<Route> to={Route::Home}>{ "click here to go to the converter" }</Link<Route>></button>
+            </div>
         }
     }
 }
@@ -48,6 +54,7 @@ fn home() -> Html {
             <NumberInput name="Number Two" value="" output={Output::Value(String::from("NumberOne"))}/>
             <NumberInput name="Base Out" value="2" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
             <NumberInput name="Base Key Out" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
+            <button><Link<Route> to={Route::Instructions}>{ "click here to go intstructions" }</Link<Route>></button>
         </div>
     }
 }
