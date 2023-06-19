@@ -155,7 +155,7 @@ pub fn button_press(props: &Props) -> Html {
                     );
                 }
             } else {
-            // In all other cases default to doing nothing.
+                // In all other cases default to doing nothing.
                 output_element
                     .unwrap()
                     .set_inner_html((&inner_html).as_str());
@@ -168,6 +168,7 @@ pub fn button_press(props: &Props) -> Html {
     html! {
         //html to add for each button.
         <div class="middle-button">
+            // Pattern match an enum to parse in a custom parameter because the borrow can be a pain sometimes
             <div class="inner-button" style="border-radius: inherit;" onclick={match props.value {OuterValue::Value(v) => move |_|{ onclick.emit(v);},}}>
                 <p class="text center" style="user-select: none; margin: 0;">{&props.text}</p>
             </div>

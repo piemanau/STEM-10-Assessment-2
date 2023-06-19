@@ -1,9 +1,11 @@
+// Adds a font to use
 @font-face {
     font-family: digitAlt;
     src: url(assets/digitalt.woff);
     font-display: swap;
 }
 
+// Set height and width to max, background colour, no margin and padding. makes size variable to use in other places. It is the ratio of the calculator.
 html {
     height: 100%;
     width: 100%;
@@ -14,10 +16,12 @@ html {
     --min: min(72vh, 147.5vw)
 }
 
+// Remove padding on the body
 body {
     margin: 0;
 }
 
+// Sets aspect ratio and the calculators colour, small padding and border to give it a nice outline
 .calculator {
     position: relative;
     aspect-ratio: 49 / 73; //48 / 72 but both + 1 to account for the padding
@@ -28,15 +32,18 @@ body {
     box-sizing: border-box;
 }
 
+// Styling for all of the buttons, no padding and makes it take up all of the space with a small border.
 .button {
   position: relative;
   padding: 0;
   width: 100%;
   height: 100%;
   border-radius: 10%;
+  // Stops weirdness on mobile when clicking
   touch-action: manipulation;
 }
 
+// Sets some styling for halfway in the button like colour and hover effects and transitions.
 .middle-button {
     height: 100%;
     padding: calc(var(--min) / 72 * 0.5);
@@ -44,6 +51,7 @@ body {
     border-radius: inherit;
     color: #9db4f2;
 
+    // On hover it changes colour slightly to be a bit more lighter
     @media (hover: hover) {
     :hover {
         transition: all 100ms ease-in;
@@ -52,11 +60,15 @@ body {
         color: #acc0f5;
     }
 }
+
+    // When clicked it changes the colour of the button to be lighter instantly
     :active {
         transition: all 0s ease-in;
         background-color: rgb(43, 55, 87);
         color: #cbd7f9;
     }
+
+    // After being clicked it fades back to what it was before
     #out:active {
         transition: all 200ms ease-in;
         background-color: rgb(43, 55, 87);
@@ -64,6 +76,7 @@ body {
     }
 }
 
+// Take up all of the available space and remove padding and inherit the colour from the parent element for the text
 .inner-button {
     display: block;
     width: 100%;
@@ -78,12 +91,14 @@ body {
     }
 }
 
+// Basic font defaults, size, colour, font family
 .text {
     font-size: calc(var(--min) / 72 * 5);
     color: #9db4f2;
     font-family: digitAlt, sans-serif;
 }
 
+// Max size available with no marhin and center text vertically.
 .inner-output {
     width: 100%;
     height: 100%;
@@ -94,6 +109,7 @@ body {
     vertical-align: middle;
 }
 
+// Change colour and add rounding on corners
 .output {
     width: 100%;
     height: 100%;
@@ -104,12 +120,14 @@ body {
     border-radius: 12.5%/50%;
 }
 
+// Add some padding on the inside
 .outer-output {
     padding: calc(var(--min) / 72 * 0.5);
     box-sizing: border-box;
     width: 100%;
 }
 
+// Setup the grid for the buttons and output
 .outer {
     position: absolute;
     display: grid;
@@ -126,7 +144,8 @@ body {
     height: var(--size);
 }
 
-.spinner {
+// The styling and animation for the loading spinner
+.loading {
     animation: rotate 2s linear infinite;
     width: calc(var(--min) / 72 * 10);
     height: calc(var(--min) / 72 * 10);
@@ -160,6 +179,7 @@ body {
     }
   }
   
+// Centers divs
 .center {
     position: absolute;
     top: 50%;
@@ -167,6 +187,7 @@ body {
     transform: translate(-50%, -50%);
 }
 
+// Setting up the names for the grid
 .zero { grid-area: zero;}
 .one { grid-area: one;}
 .two { grid-area: two;}
