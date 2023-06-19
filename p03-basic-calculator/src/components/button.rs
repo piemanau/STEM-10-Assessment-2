@@ -87,22 +87,28 @@ pub fn button_press(props: &Props) -> Html {
                 // Index and offset to add new numbers to the new string correctly
                 let mut index = 0;
                 let mut offset = 0;
+                // Loops over each number, converts to floating point number and adds to a string
                 for number in numbers {
                     let base = number.as_ref().unwrap().as_str().to_owned().clone();
+                    // Ends with . for example 1. and adds a zero at the end so it will be 1.0
                     if number.as_ref().unwrap().as_str().ends_with(".") {
                         let both = base + "0";
                         new_numbers.push(both.clone());
+                    // If it is already in the correct format it just adds it to the list of numbers
                     } else if number.as_ref().unwrap().as_str().contains(".") {
                         new_numbers.push(base.clone());
+                    // If it has no full stop then it adds .0 so 1 would become 1.0
                     } else {
                         let both = base + ".0";
                         new_numbers.push(both.clone());
                     }
+
+                    // For each of the numbers it gets the spot it needs to be at in the new string (copy of old) and replaces each number and updates the index and offset for the next number
                     new_output = (&new_output[0..number.as_ref().unwrap().start() + offset])
                         .to_string()
                         + new_numbers.get(index).unwrap().as_str()
                         + &new_output[number.as_ref().unwrap().end() + offset..new_output.len()];
-                    //calculate the ranges first so the number is always 0 or positive because the type is unsigned meaning thet is the value goes into negative at anypoint the number will overflow into the other side of the min/max
+                    // Calculate the ranges first so the number is always 0 or positive because the type is unsigned meaning thet is the value goes into negative at anypoint the number will overflow into the other side of the min/max
                     offset += new_numbers.get(index).unwrap().len()
                         - (number.as_ref().unwrap().end() - number.as_ref().unwrap().start());
                     index += 1;
@@ -125,6 +131,7 @@ pub fn button_press(props: &Props) -> Html {
                 // Clear the output
                 output_element.unwrap().set_inner_html("");
             } else if sign == "C" {
+                // Removes the the last digit if there is more than 0 digits
                 if document()
                     .get_element_by_id("output")
                     .unwrap()
@@ -148,11 +155,13 @@ pub fn button_press(props: &Props) -> Html {
                     );
                 }
             } else {
+            // In all other cases default to doing nothing.
                 output_element
                     .unwrap()
                     .set_inner_html((&inner_html).as_str());
             }
         }
+        // Resize the text to fit the width
         runFitText();
     });
 
