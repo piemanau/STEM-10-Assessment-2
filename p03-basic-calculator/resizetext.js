@@ -1,5 +1,6 @@
 "use strict";
 
+//Gets the width of the text
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
@@ -10,6 +11,7 @@ function getTextWidth(text, font) {
   return [metrics.width, height];
 }
 
+// Gets the size and updates the text on the HTML
 function fitText(el, maxHeight) {
   let resize = function() {
     let cs = window.getComputedStyle(el);
@@ -35,6 +37,7 @@ var firstRun = true;
 let out;
 var fit;
 
+// Lets me run the code from rust
 export function runFitText() {
   if (firstRun == true) {
     firstRun = false;
