@@ -1,4 +1,4 @@
-use gloo::{console::log, utils::document};
+use gloo::utils::document;
 use wasm_bindgen::JsCast;
 use web_sys::{HtmlInputElement, InputEvent};
 use yew::{function_component, html, Callback, Html, Properties};
@@ -15,91 +15,141 @@ pub struct Props {
 #[function_component(NumberInput)]
 pub fn text_input(props: &Props) -> Html {
     let oninput = Callback::from(|tuple: (InputEvent, String)| {
-
-        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_in = document()
+            .get_element_by_id("basein")
+            .unwrap()
+            .unchecked_into::<HtmlInputElement>()
+            .value();
+        let base_out = document()
+            .get_element_by_id("baseout")
+            .unwrap()
+            .unchecked_into::<HtmlInputElement>()
+            .value();
 
         if base_in == String::from("1") || base_out == String::from("1") {
             return;
         }
 
-        if tuple.1.starts_with("Both") {
-        
-        //FIXME: top box converts from base a to base b and bottom box converts from base a to base b whereas it should convert from base b to base a
-        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
-
-        let prev_base_key_in = document().get_element_by_id("basekeyin").unwrap().get_attribute("prevvalue");
-        let prev_base_key_out = document().get_element_by_id("basekeyout").unwrap().get_attribute("prevvalue");
-        let prev_base_in = document().get_element_by_id("basein").unwrap().get_attribute("prevvalue");
-        let prev_base_out = document().get_element_by_id("baseout").unwrap().get_attribute("prevvalue");
-
-        let outputs = tuple.1.split_whitespace().collect::<Vec<&str>>();
-        let outputs = (outputs.get(1).unwrap().to_ascii_lowercase(), outputs.get(2).unwrap().to_ascii_lowercase());
-
-        let value_one = document().get_element_by_id(&outputs.0).unwrap();
-        let value_two = document().get_element_by_id(&outputs.1).unwrap();
-
-            updateValue(
-                document()
-                    .get_element_by_id(&outputs.0)
-                    .unwrap(),
-                convert_from_base_to_base(value_one.unchecked_into::<HtmlInputElement>().value(), prev_base_in.unwrap().parse().unwrap(), base_in.parse::<u32>().unwrap().clone(), &prev_base_key_in.unwrap(), &base_key_in),
-            );
-
-            updateValue(
-                document()
-                    .get_element_by_id(&outputs.1)
-                    .unwrap(),
-                convert_from_base_to_base(value_two.unchecked_into::<HtmlInputElement>().value(), prev_base_out.unwrap().parse().unwrap(), base_out.parse().unwrap(), &prev_base_key_out.unwrap(), &base_key_out),
-            );
-
-        log!("Updated.");
-        } else {
-        let value = tuple
-            .0
-            .clone()
-            .target()
+        let base_key_in = document()
+            .get_element_by_id("basekeyin")
             .unwrap()
             .unchecked_into::<HtmlInputElement>()
             .value();
-        
-        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
-        let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
+        let base_key_out = document()
+            .get_element_by_id("basekeyout")
+            .unwrap()
+            .unchecked_into::<HtmlInputElement>()
+            .value();
 
-        if tuple.0.target().unwrap().unchecked_into::<HtmlInputElement>().id() == String::from("numberone") {
+        let prev_base_key_in = document()
+            .get_element_by_id("basekeyin")
+            .unwrap()
+            .get_attribute("prevvalue");
+        let prev_base_key_out = document()
+            .get_element_by_id("basekeyout")
+            .unwrap()
+            .get_attribute("prevvalue");
+        let prev_base_in = document()
+            .get_element_by_id("basein")
+            .unwrap()
+            .get_attribute("prevvalue");
+        let prev_base_out = document()
+            .get_element_by_id("baseout")
+            .unwrap()
+            .get_attribute("prevvalue");
+
+        if tuple.1.starts_with("Both") {
+            let outputs = tuple.1.split_whitespace().collect::<Vec<&str>>();
+            let outputs = (
+                outputs.get(1).unwrap().to_ascii_lowercase(),
+                outputs.get(2).unwrap().to_ascii_lowercase(),
+            );
+
+            let value_one = document().get_element_by_id(&outputs.0).unwrap();
+            let value_two = document().get_element_by_id(&outputs.1).unwrap();
 
             updateValue(
-                document()
-                    .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
-                    .unwrap(),
-                convert_from_base_to_base(value, base_in.parse().unwrap(), base_out.parse().unwrap(), &base_key_in, &base_key_out),
+                document().get_element_by_id(&outputs.0).unwrap(),
+                convert_from_base_to_base(
+                    value_one.unchecked_into::<HtmlInputElement>().value(),
+                    prev_base_in.unwrap().parse().unwrap(),
+                    base_in.parse::<u32>().unwrap().clone(),
+                    &prev_base_key_in.unwrap(),
+                    &base_key_in,
+                ),
+            );
+
+            updateValue(
+                document().get_element_by_id(&outputs.1).unwrap(),
+                convert_from_base_to_base(
+                    value_two.unchecked_into::<HtmlInputElement>().value(),
+                    prev_base_out.unwrap().parse().unwrap(),
+                    base_out.parse().unwrap(),
+                    &prev_base_key_out.unwrap(),
+                    &base_key_out,
+                ),
             );
         } else {
-            updateValue(
-                document()
-                    .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
-                    .unwrap(),
-                convert_from_base_to_base(value, base_out.parse().unwrap(), base_in.parse().unwrap(), &base_key_out, &base_key_in),
-            );
-        }
+            let value = tuple
+                .0
+                .clone()
+                .target()
+                .unwrap()
+                .unchecked_into::<HtmlInputElement>()
+                .value();
 
-        log!("Updated.");
+            if tuple
+                .0
+                .target()
+                .unwrap()
+                .unchecked_into::<HtmlInputElement>()
+                .id()
+                == String::from("numberone")
+            {
+                updateValue(
+                    document()
+                        .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                        .unwrap(),
+                    convert_from_base_to_base(
+                        value,
+                        base_in.parse().unwrap(),
+                        base_out.parse().unwrap(),
+                        &base_key_in,
+                        &base_key_out,
+                    ),
+                );
+            } else {
+                updateValue(
+                    document()
+                        .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                        .unwrap(),
+                    convert_from_base_to_base(
+                        value,
+                        base_out.parse().unwrap(),
+                        base_in.parse().unwrap(),
+                        &base_key_out,
+                        &base_key_in,
+                    ),
+                );
+            }
         }
-        //update previous values
-        let base_key_in = document().get_element_by_id("basekeyin").unwrap().unchecked_into::<HtmlInputElement>().value();
-            let base_key_out = document().get_element_by_id("basekeyout").unwrap().unchecked_into::<HtmlInputElement>().value();
-            let base_in = document().get_element_by_id("basein").unwrap().unchecked_into::<HtmlInputElement>().value();
-            let base_out = document().get_element_by_id("baseout").unwrap().unchecked_into::<HtmlInputElement>().value();
-
-        let _prev_base_key_in = document().get_element_by_id("basekeyin").unwrap().set_attribute("prevvalue", &base_key_in);
-        let _prev_base_key_out = document().get_element_by_id("basekeyout").unwrap().set_attribute("prevvalue", &base_key_out);
-        let _prev_base_in = document().get_element_by_id("basein").unwrap().set_attribute("prevvalue", &base_in);
-        let _prev_base_out = document().get_element_by_id("baseout").unwrap().set_attribute("prevvalue", &base_out);
+        // Update previous values
+        let _prev_base_key_in = document()
+            .get_element_by_id("basekeyin")
+            .unwrap()
+            .set_attribute("prevvalue", &base_key_in);
+        let _prev_base_key_out = document()
+            .get_element_by_id("basekeyout")
+            .unwrap()
+            .set_attribute("prevvalue", &base_key_out);
+        let _prev_base_in = document()
+            .get_element_by_id("basein")
+            .unwrap()
+            .set_attribute("prevvalue", &base_in);
+        let _prev_base_out = document()
+            .get_element_by_id("baseout")
+            .unwrap()
+            .set_attribute("prevvalue", &base_out);
     });
 
     html! {

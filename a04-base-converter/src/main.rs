@@ -1,3 +1,4 @@
+use gloo::console::log;
 use wasm_bindgen::prelude::wasm_bindgen;
 use web_sys::Element;
 use yew::prelude::*;
@@ -31,7 +32,7 @@ fn switch(routes: Route) -> Html {
                 <p>{"Base key in and base key out are the \"keys\" you use to convert to and froms. \"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
                 <button><Link<Route> to={Route::Home}>{ "click here to go to the converter" }</Link<Route>></button>
             </div>
-        }
+        },
     }
 }
 
@@ -39,11 +40,10 @@ fn switch(routes: Route) -> Html {
 fn App() -> Html {
     html! {
         <BrowserRouter>
-            <Switch<Route> render={switch} /> // <- must be child of <BrowserRouter>
+            <Switch<Route> render={switch} />
         </BrowserRouter>
     }
 }
-
 
 fn home() -> Html {
     html! {
@@ -83,8 +83,15 @@ fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u128 {
     let mut output: u128 = 0;
 
     for character in number.chars() {
-        //TODO: remove unwrap
-        let num = base_key.find(character).unwrap();
+        let num;
+        match base_key.find(character) {
+            Some(v) => num = v,
+            None => {
+                output = 0;
+                log!("Error: invalid input");
+                break;
+            }
+        }
         output *= base as u128;
         output += num as u128;
     }
