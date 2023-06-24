@@ -118,6 +118,7 @@ body {
     box-sizing: border-box;
     background-color: #1a2238;
     border-radius: 12.5%/50%;
+    white-space: nowrap; overflow: scroll;
 }
 
 // Add some padding on the inside
