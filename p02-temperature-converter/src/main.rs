@@ -1,31 +1,52 @@
-use gloo::{utils::document};
 use wasm_bindgen::JsCast;
-use web_sys::{InputEvent, HtmlInputElement};
-use yew::{function_component, Html, Callback, html};
+use web_sys::{HtmlInputElement, InputEvent};
+use yew::{function_component, html, use_state, Callback, Html};
 
 #[function_component]
 fn App() -> Html {
-    // Gets the value from the slider
-    let oninput = Callback::from(|event: InputEvent| {
-        let value = event.clone()
-            .target()
-            .unwrap()
-            .unchecked_into::<HtmlInputElement>()
-            .value();
+    // Sets up defaults for the temperatures
+    let celcius = use_state(|| 50.);
+    let kelvin = use_state(|| 323.15);
+    let fahrenheit = use_state(|| 122.);
+    let freedom = use_state(|| 122.);
+    let rankine = use_state(|| 581.66);
+    let pietemp = use_state(|| 54.51);
 
-        //Parses the value to a float
-        let num_value = value.parse::<f64>().unwrap_or(0.);
+    // Gets the value from the slider and updates the temperatures accordingly
+    let oninput: Callback<InputEvent> = {
+        // Copy variables to update the values of the temperatures
+        let celcius = celcius.clone();
+        let kelvin = kelvin.clone();
+        let fahrenheit = fahrenheit.clone();
+        let freedom = freedom.clone();
+        let rankine = rankine.clone();
+        let pietemp = pietemp.clone();
 
-        // Calculates all the values for the outputs and sets them
-        document().get_element_by_id("output-celcius").unwrap().set_inner_html(&("Celcius: ".to_string() + num_value.to_string().as_str()));
-        document().get_element_by_id("output-kelvin").unwrap().set_inner_html(&("Kelvin: ".to_string() + &(((num_value + 273.15) * 100.).round() / 100.).to_string().as_str()));
-        let freedom: String = ((((1.8 * num_value) + 32.) * 100.).round() / 100.).to_string();
-        document().get_element_by_id("output-farenheit").unwrap().set_inner_html(&("Farenheight: ".to_string() + &freedom));
-        document().get_element_by_id("output-freedom").unwrap().set_inner_html(&("Freedom Units: ".to_string() + &freedom));
-        document().get_element_by_id("output-rankine").unwrap().set_inner_html(&("Rankine: ".to_string() + &((((num_value + 273.15) * 1.8) * 100.).round() / 100.).to_string().as_str()));
-        let temp = ((num_value / 43.229041) - 3.321) * 34.234;
-        document().get_element_by_id("output-pietemp").unwrap().set_inner_html(&("Pietemp: ".to_string() + &((((temp) * 100.).round() / 100.).to_string().as_str())));
-    });
+        // Gets the slider value and updates the temperatures accordingly
+        Callback::from(move |event: InputEvent| {
+            // Gets the slider value
+            let value = event
+                .clone()
+                .target()
+                .unwrap()
+                .unchecked_into::<HtmlInputElement>()
+                .value();
+
+            //Parses the value to a float
+            let value = value.parse::<f64>().unwrap_or(0.);
+
+            // Calculates the temp for "freedom units" and fahrenheit
+            let freedom_temp = (((1.8 * value) + 32.) * 100.).round() / 100.;
+
+            // Calculates all the values for the outputs and sets them
+            celcius.set(value);
+            kelvin.set(((value + 273.15) * 100.).round() / 100.);
+            fahrenheit.set(freedom_temp);
+            freedom.set(freedom_temp);
+            rankine.set((((value + 273.15) * 1.8) * 100.).round() / 100.);
+            pietemp.set(((((value / 43.229041) - 3.321) * 34.234) * 100.).round() / 100.);
+        })
+    };
 
     // Basic HTMl
     html! {
@@ -33,13 +54,13 @@ fn App() -> Html {
         <div class="outer">
             // Used for centering
             <div class="inner">
-                // All the outputs
-                <div id={"output-celcius"} class="text">{"Celcius: 50"}</div>
-                <div id={"output-kelvin"} class="text">{"Kelvin: 323.15"}</div>
-                <div id={"output-farenheit"} class="text">{"Farenheight: 122"}</div>
-                <div id={"output-freedom"} class="text">{"Freedom Units: 122"}</div>
-                <div id={"output-rankine"} class="text">{"Rankine: 581.66"}</div>
-                <div id={"output-pietemp"} class="text">{"Pietemp: 54.51"}</div>
+                // All the outputs, uses the format macro to concatenate the output after the name, e.g. celcius
+                <div id={"output-celcius"} class="text">{ format!("Celcius: {}", *celcius) }</div>
+                <div id={"output-kelvin"} class="text">{ format!("Kelvin: {}", *kelvin) }</div>
+                <div id={"output-farenheit"} class="text">{ format!("Fahrenheit: {}", *fahrenheit) }</div>
+                <div id={"output-freedom"} class="text">{ format!("Freedom Units: {}", *freedom) }</div>
+                <div id={"output-rankine"} class="text">{ format!("Rankine: {}", *rankine) }</div>
+                <div id={"output-pietemp"} class="text">{ format!("Pietemp: {}", *pietemp) }</div>
                 // Slider, oninput runs the calculation code when moved
                 <input class="slider" type="range" min="-50" max="200" name={"slider"} oninput={oninput} />
             </div>
