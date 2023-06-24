@@ -37,7 +37,7 @@ var firstRun = true;
 let out;
 var fit;
 
-// Lets me run the code from rust
+// Lets me run the code from rust and sets some variables for the first run
 export function runFitText() {
   if (firstRun == true) {
     firstRun = false;
