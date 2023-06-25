@@ -51,6 +51,10 @@ body {
     border-radius: inherit;
     color: #9db4f2;
 
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+
     // On hover it changes colour slightly to be a bit more lighter
     @media (hover: hover) {
     :hover {
@@ -118,7 +122,15 @@ body {
     box-sizing: border-box;
     background-color: #1a2238;
     border-radius: 12.5%/50%;
-    white-space: nowrap; overflow: scroll;
+    white-space: nowrap;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.output::-webkit-scrollbar {
+  display: none;
 }
 
 // Add some padding on the inside
