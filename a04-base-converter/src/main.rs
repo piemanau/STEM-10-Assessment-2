@@ -8,6 +8,7 @@ mod components;
 
 use crate::components::number_input::*;
 
+// Specifies what path of the URL points to each arm in the enum
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
     #[at("/")]
@@ -16,15 +17,20 @@ enum Route {
     Instructions,
 }
 
+// Output for each of the inputs
 #[derive(PartialEq, Clone)]
 pub enum Output {
     Value(String),
 }
 
+// Gets the url and runs the relevant code
 fn switch(routes: Route) -> Html {
     match routes {
+        // If it is at "home" it renders the home code
         Route::Home => home(),
+        // If it is at intructions it will render the instructions
         Route::Instructions => html! {
+            // Instruction elements
             <div class="container">
                 <div>
                     <h1 class="header">{"Base Converter Instructions"}</h1>
@@ -38,6 +44,7 @@ fn switch(routes: Route) -> Html {
     }
 }
 
+// Where the main function calls, it calles the switch function
 #[function_component]
 fn App() -> Html {
     html! {
@@ -47,45 +54,55 @@ fn App() -> Html {
     }
 }
 
+// The "home" function, the code where the converter is
 fn home() -> Html {
     html! {
         <div class="container">
             <div>
-                <NumberInput name="Number One" value="" output={Output::Value(String::from("NumberTwo"))}/>
+                // Inputs and outputs
+                <NumberInput name="Number One" value="0" output={Output::Value(String::from("NumberTwo"))}/>
                 <NumberInput name="Base In" value="10" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
                 <NumberInput name="Base Key In" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
-                <NumberInput name="Number Two" value="" output={Output::Value(String::from("NumberOne"))}/>
+                <NumberInput name="Number Two" value="0" output={Output::Value(String::from("NumberOne"))}/>
                 <NumberInput name="Base Out" value="2" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
                 <NumberInput name="Base Key Out" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
+                // Button to go to the intructions
                 <Link<Route> to={Route::Instructions}><button class="button inner-input">{ "Go to instructions" }</button></Link<Route>>
             </div>
         </div>
     }
 }
 
+// Where the code starts, runs the app
 fn main() {
     yew::Renderer::<App>::new().render();
 }
 
+// Converts from base 10
 fn convert_from_base_ten(mut number: u128, base: u32, base_key: &str) -> String {
+    // If the number is zero it just returns the first value in base key
     if number == 0 {
         return base_key[0..1].to_owned();
     }
 
     let mut output = String::from("");
 
+    // While the number isnt 0 it gets the modulo of the number and adds it to the output using the base key and divides the number by the base
     while number != 0 {
         let l;
         (number, l) = (number / base as u128, number % base as u128);
         output = String::from(&base_key[l as usize..l as usize + 1 as usize]) + &output;
     }
 
+    // Returns the output
     output
 }
 
+// Convert to base 10
 fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u128 {
     let mut output: u128 = 0;
 
+    // For each character the in the string it gets the value
     for character in number.chars() {
         let num;
         match base_key.find(character) {
@@ -96,13 +113,16 @@ fn convert_to_base_ten(number: String, base: u32, base_key: &str) -> u128 {
                 break;
             }
         }
+        // Once it gets the value it times it by the base (output * 10 in base 10) and adds the number
         output *= base as u128;
         output += num as u128;
     }
 
+    // Returns the output
     output
 }
 
+// Convert from any base to any other base using the other 2 conversion methods
 fn convert_from_base_to_base(
     number: String,
     base_in: u32,
@@ -122,6 +142,7 @@ extern "C" {
     fn updateValue(element: Element, value: String);
 }
 
+// Test the base conversions, if they all pass it should work
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.

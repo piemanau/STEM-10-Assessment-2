@@ -5,6 +5,7 @@ use yew::{function_component, html, Callback, Html, Properties};
 
 use crate::{convert_from_base_to_base, updateValue, Output};
 
+// Properties passed in when adding the component to HTML
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub name: String,
@@ -12,9 +13,13 @@ pub struct Props {
     pub value: String,
 }
 
+// The actual component that returns HTML
 #[function_component(NumberInput)]
 pub fn text_input(props: &Props) -> Html {
+
+    // On input for the input elements
     let oninput = Callback::from(|tuple: (InputEvent, String)| {
+        // Get a bunch of values from HTML elements
         let base_in = document()
             .get_element_by_id("basein")
             .unwrap()
@@ -26,10 +31,12 @@ pub fn text_input(props: &Props) -> Html {
             .unchecked_into::<HtmlInputElement>()
             .value();
 
+        // If atleast one of the bases is 1 return and do nothing
         if base_in == String::from("1") || base_out == String::from("1") {
             return;
         }
 
+        // Get more values
         let base_key_in = document()
             .get_element_by_id("basekeyin")
             .unwrap()
@@ -58,16 +65,23 @@ pub fn text_input(props: &Props) -> Html {
             .unwrap()
             .get_attribute("prevvalue");
 
-        if tuple.1.starts_with("Both") {
-            let outputs = tuple.1.split_whitespace().collect::<Vec<&str>>();
+        // Deconstruct tuple into 2 seperate variables
+        let (event, output) = tuple;
+
+        // If the output goes to both
+        if output.starts_with("Both") {
+            // Splits the outputs into a tuple
+            let outputs = output.split_whitespace().collect::<Vec<&str>>();
             let outputs = (
                 outputs.get(1).unwrap().to_ascii_lowercase(),
                 outputs.get(2).unwrap().to_ascii_lowercase(),
             );
 
+            // Gets elements of both of the outputs
             let value_one = document().get_element_by_id(&outputs.0).unwrap();
             let value_two = document().get_element_by_id(&outputs.1).unwrap();
 
+            // Updates the values of the outputs aswell as calculating them
             updateValue(
                 document().get_element_by_id(&outputs.0).unwrap(),
                 convert_from_base_to_base(
@@ -89,26 +103,28 @@ pub fn text_input(props: &Props) -> Html {
                     &base_key_out,
                 ),
             );
+        // If it is not to both outputs
         } else {
-            let value = tuple
-                .0
+            // Gets the value of the input element, one of the numbers going in
+            let value = event
                 .clone()
                 .target()
                 .unwrap()
                 .unchecked_into::<HtmlInputElement>()
                 .value();
 
-            if tuple
-                .0
+            // If the input is from numberone
+            if event
                 .target()
                 .unwrap()
                 .unchecked_into::<HtmlInputElement>()
                 .id()
                 == String::from("numberone")
             {
+                // Calculates and updates the value
                 updateValue(
                     document()
-                        .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                        .get_element_by_id(output.to_lowercase().clone().as_ref())
                         .unwrap(),
                     convert_from_base_to_base(
                         value,
@@ -118,10 +134,12 @@ pub fn text_input(props: &Props) -> Html {
                         &base_key_out,
                     ),
                 );
+            // If it is numberone
             } else {
+                // Calculates and updates the other output
                 updateValue(
                     document()
-                        .get_element_by_id(tuple.1.to_lowercase().clone().as_ref())
+                        .get_element_by_id(output.to_lowercase().clone().as_ref())
                         .unwrap(),
                     convert_from_base_to_base(
                         value,
@@ -133,7 +151,7 @@ pub fn text_input(props: &Props) -> Html {
                 );
             }
         }
-        // Update previous values
+        // Update previous values, used if there is an invalid input somewhere
         let _prev_base_key_in = document()
             .get_element_by_id("basekeyin")
             .unwrap()
@@ -152,11 +170,14 @@ pub fn text_input(props: &Props) -> Html {
             .set_attribute("prevvalue", &base_out);
     });
 
+    // Output/input HTML
     html! {
             <div style="display: flex; align-items: center; width: 80vmin">
+                // Name element
                 <div class="inner-input">
                     <p>{props.name.clone()}</p>
                 </div>
+                // Input element
                 <input class="inner-input" type="text" value={props.value.clone()} prevvalue={props.value.clone()} placeholder={props.name.clone()} name={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} id={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} oninput={match props.output.clone() {Output::Value(v) => move |event: InputEvent| { oninput.emit((event, v.clone()));}}} />
             </div>
     }
