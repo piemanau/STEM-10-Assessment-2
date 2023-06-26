@@ -153,9 +153,11 @@ pub fn text_input(props: &Props) -> Html {
     });
 
     html! {
-            <div style="display: flex; align-items: center;">
-                <p style="width: 5vw;">{props.name.clone()}</p>
-                <input type="text" value={props.value.clone()} prevvalue={props.value.clone()} placeholder={props.name.clone()} name={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} id={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} oninput={match props.output.clone() {Output::Value(v) => move |event: InputEvent| { oninput.emit((event, v.clone()));}}} />
+            <div style="display: flex; align-items: center; width: 80vmin">
+                <div class="inner-input">
+                    <p>{props.name.clone()}</p>
+                </div>
+                <input class="inner-input" type="text" value={props.value.clone()} prevvalue={props.value.clone()} placeholder={props.name.clone()} name={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} id={props.name.clone().split_whitespace().collect::<Vec<&str>>().join("").to_lowercase()} oninput={match props.output.clone() {Output::Value(v) => move |event: InputEvent| { oninput.emit((event, v.clone()));}}} />
             </div>
     }
 }
