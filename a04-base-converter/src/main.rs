@@ -11,9 +11,9 @@ use crate::components::number_input::*;
 // Specifies what path of the URL points to each arm in the enum
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
-    #[at("/")]
+    #[at("/10/stem/at2/base-converter/")]
     Home,
-    #[at("/instructions")]
+    #[at("/10/stem/at2/base-converter/instructions")]
     Instructions,
 }
 
