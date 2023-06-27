@@ -43,7 +43,7 @@ fn App() -> Html {
             // Output with the second number having a leading 0
             <div class="text">{ format!("Hours and minutes: {}:{:02}", *hours, *minutes) }</div>
             // Slider
-            <input class="slider" type="range" min="0" max="400" name={"slider"} oninput={oninput} />
+            <input style="width: 400px;" class="slider" type="range" min="0" max="400" name={"slider"} oninput={oninput} />
         </div>
     }
 }
