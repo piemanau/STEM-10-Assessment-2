@@ -1,9 +1,11 @@
+// Set background colour over the entire screen
 html, body {
     margin: 0;
     height: 100%;
     background-color: #1a2238;
 }
 
+// Changes styling for the base converters inner sections like inputs and labels
 .inner-input {
     width: 40vmin;
     height: 10vmin;
@@ -19,6 +21,7 @@ html, body {
     font-family: sans-serif;
 }
 
+// Styling for all buttons
 .button {
     a {
         text-decoration: none;
@@ -34,10 +37,12 @@ html, body {
     }
 }
 
+// Styling for buttons and innerinputs, must have both classes
 .button.inner-input {
     width: 79.5vmin;
 }
 
+// Styling for buttons that dont have the innerinput class, on the instructions screen
 .button:not(.inner-input) {
     height: 5vmin;
     width: 100%;
@@ -45,18 +50,21 @@ html, body {
     border: #37448c solid 0.5vmin;
 }
 
+// Styling for text, colour, size, etc
 .text {
     color: #9db4f2;
     font-size: 1.75vmin;
     font-family: sans-serif;
 }
 
+// Styling for the headers
 .header {
     color: #9db4f2;
     font-size: 4vmin;
     font-family: sans-serif;
 }
 
+// Styling for the container, centering etc
 .container {
     height: inherit;
     outline: solid 1px black;
@@ -65,6 +73,7 @@ html, body {
     align-items: center;
 }
 
+// Setting the background colour of the base converter to show distinction from the background
 .background {
     background-color: #37448c;
     padding: 0.25vmin;
