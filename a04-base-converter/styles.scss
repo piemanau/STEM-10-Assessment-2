@@ -14,7 +14,7 @@ html, body {
     padding-right: 1vmin;
     margin: 0.25vmin;
     border: none;
-    background-color: #37448c;
+    background-color: #1a2238;
     color: #9db4f2;
     font-family: sans-serif;
 }
@@ -27,7 +27,7 @@ html, body {
     margin: none;
     padding: none;
     color: #9db4f2;
-    background-color: #37448c;
+    background-color: #1a2238;
 
     &:hover {
         cursor: pointer;
@@ -42,6 +42,7 @@ html, body {
     height: 5vmin;
     width: 100%;
     font-size: 1.75vmin;
+    border: #37448c solid 0.5vmin;
 }
 
 .text {
@@ -62,4 +63,9 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.background {
+    background-color: #37448c;
+    padding: 0.25vmin;
 }

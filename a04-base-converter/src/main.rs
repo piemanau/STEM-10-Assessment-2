@@ -34,6 +34,7 @@ fn switch(routes: Route) -> Html {
             <div class="container">
                 <div>
                     <h1 class="header">{"Base Converter Instructions"}</h1>
+                    <p class="text" style="font-weight: bold">{"Don't reload this page, doesn't work for now"}</p>
                     <p class="text">{"Number one and number two are the numbers you are converting to and from."}</p>
                     <p class="text">{"Base in and base out are the bases you are converting to and from, base 10 to base 2 is decimal to binary."}</p>
                     <p class="text">{"Base key in and base key out are the \"keys\" you use to convert to and from. "}<br/><br/>{"\"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
@@ -58,7 +59,7 @@ fn App() -> Html {
 fn home() -> Html {
     html! {
         <div class="container">
-            <div>
+            <div class="background">
                 // Inputs and outputs
                 <NumberInput name="Number One" value="0" output={Output::Value(String::from("NumberTwo"))}/>
                 <NumberInput name="Base In" value="10" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
