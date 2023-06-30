@@ -11,9 +11,9 @@ use crate::components::number_input::*;
 // Specifies what path of the URL points to each arm in the enum
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
-    #[at("/10/stem/at2/base-converter/")]
+    #[at("/")]
     Home,
-    #[at("/10/stem/at2/base-converter/instructions")]
+    #[at("/instructions")]
     Instructions,
 }
 
@@ -34,7 +34,6 @@ fn switch(routes: Route) -> Html {
             <div class="container">
                 <div>
                     <h1 class="header">{"Base Converter Instructions"}</h1>
-                    <p class="text" style="font-weight: bold">{"Don't reload this page, doesn't work for now"}</p>
                     <p class="text">{"Number one and number two are the numbers you are converting to and from."}</p>
                     <p class="text">{"Base in and base out are the bases you are converting to and from, base 10 to base 2 is decimal to binary."}</p>
                     <p class="text">{"Base key in and base key out are the \"keys\" you use to convert to and from. "}<br/><br/>{"\"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
@@ -49,9 +48,9 @@ fn switch(routes: Route) -> Html {
 #[function_component]
 fn App() -> Html {
     html! {
-        <BrowserRouter>
+        <HashRouter>
             <Switch<Route> render={switch} />
-        </BrowserRouter>
+        </HashRouter>
     }
 }
 
