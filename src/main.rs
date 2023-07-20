@@ -47,7 +47,12 @@ fn switch(routes: Route) -> Html {
         Route::BaseConverter => html! { <BaseConverter /> },
         Route::BaseConverterInstructions => html! { <BaseConverterInstructions /> },
         Route::TimeConverter => html! { <TimeConverter /> },
-        Route::NotFound => html! { <h1>{ "404" }</h1> },
+        Route::NotFound => html! {
+            <div class="center" style="width: 100px;">
+                <p class="text center-horizontally"><br />{ "404" }</p>
+                <Link<Route> to={Route::Home}><button class="single-home-button">{ "Go back home" }</button></Link<Route>>
+            </div>
+        },
     }
 }
 
