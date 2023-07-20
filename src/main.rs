@@ -10,22 +10,22 @@ mod projects;
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
-    #[at("/")]
+    #[at("/10/stem/at2/")]
     Home,
-    #[at("/basic-squaring")]
+    #[at("/10/stem/at2/basic-squaring")]
     BasicSquaring,
-    #[at("/temperature-converter")]
+    #[at("/10/stem/at2/temperature-converter")]
     TemperatureConverter,
-    #[at("/basic-calculator")]
+    #[at("/10/stem/at2/basic-calculator")]
     BasicCalculator,
-    #[at("/base-converter")]
+    #[at("/10/stem/at2/base-converter")]
     BaseConverter,
-    #[at("/base-converter/instructions")]
+    #[at("/10/stem/at2/base-converter/instructions")]
     BaseConverterInstructions,
-    #[at("/time-converter")]
+    #[at("/10/stem/at2/time-converter")]
     TimeConverter,
     #[not_found]
-    #[at("/404")]
+    #[at("/10/stem/at2/404")]
     NotFound,
 }
 
