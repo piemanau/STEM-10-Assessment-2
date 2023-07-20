@@ -23,7 +23,7 @@ jobs:
       uses: jetli/trunk-action@v0.1.0
 
     - name: Build Site with Trunk
-      run: trunk build --release -d at2 --filehash false
+      run: trunk build --release -d at2 --filehash false --public-url /10/stem/at2/
 
     - name: Optimize Wasm Size
       uses: NiklasEi/wasm-opt-action@v2
