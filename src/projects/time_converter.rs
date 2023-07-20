@@ -2,11 +2,11 @@ use yew::prelude::*;
 use web_sys::{HtmlInputElement, InputEvent};
 use wasm_bindgen::JsCast;
 
-#[function_component]
-fn App() -> Html {
-    let total = use_state(|| 0);
+#[function_component(TimeConverter)]
+pub(crate) fn time_converter() -> Html {
+    let total = use_state(|| 50);
     let hours = use_state(|| 0);
-    let minutes = use_state(|| 0);
+    let minutes = use_state(|| 50);
 
      // Gets the value from the slider and updates the outputs accordingly
      let oninput: Callback<InputEvent> = {
@@ -37,18 +37,13 @@ fn App() -> Html {
 
     // Basic html
     html! {
-        <div>
+        <div class="center">
             // Outputs
             <div class="text">{ format!("Total Minutes: {}", *total) }</div>
             // Output with the second number having a leading 0
             <div class="text">{ format!("Hours and minutes: {}:{:02}", *hours, *minutes) }</div>
             // Slider
-            <input style="width: 400px;" class="slider" type="range" min="0" max="400" name={"slider"} oninput={oninput} />
+            <input style="width: 550px;" class="slider" type="range" min="0" max="400" name={"slider"} oninput={oninput} />
         </div>
     }
-}
-
-// Setup code to run the app
-fn main() {
-    yew::Renderer::<App>::new().render();
 }

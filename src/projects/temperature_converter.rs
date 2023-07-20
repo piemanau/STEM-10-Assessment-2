@@ -2,8 +2,8 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlInputElement, InputEvent};
 use yew::{function_component, html, use_state, Callback, Html};
 
-#[function_component]
-fn App() -> Html {
+#[function_component(TemperatureConverter)]
+pub(crate) fn temperature_converter() -> Html {
     // Sets up defaults for the temperatures
     let celcius = use_state(|| 50.);
     let kelvin = use_state(|| 323.15);
@@ -51,24 +51,19 @@ fn App() -> Html {
     // Basic HTMl
     html! {
         // Used for centering
-        <div class="outer">
+        <div class="center">
             // Used for centering
             <div class="inner">
                 // All the outputs, uses the format macro to concatenate the output after the name, e.g. celcius
-                <div id={"output-celcius"} class="text">{ format!("Celcius: {}", *celcius) }</div>
-                <div id={"output-kelvin"} class="text">{ format!("Kelvin: {}", *kelvin) }</div>
-                <div id={"output-farenheit"} class="text">{ format!("Fahrenheit: {}", *fahrenheit) }</div>
-                <div id={"output-freedom"} class="text">{ format!("Freedom Units: {}", *freedom) }</div>
-                <div id={"output-rankine"} class="text">{ format!("Rankine: {}", *rankine) }</div>
-                <div id={"output-pietemp"} class="text">{ format!("Pietemp: {}", *pietemp) }</div>
+                <div id={"output-celcius"} class="temp-text text">{ format!("Celcius: {}", *celcius) }</div>
+                <div id={"output-kelvin"} class="temp-text text">{ format!("Kelvin: {}", *kelvin) }</div>
+                <div id={"output-farenheit"} class="temp-text text">{ format!("Fahrenheit: {}", *fahrenheit) }</div>
+                <div id={"output-freedom"} class="temp-text text">{ format!("Freedom Units: {}", *freedom) }</div>
+                <div id={"output-rankine"} class="temp-text text">{ format!("Rankine: {}", *rankine) }</div>
+                <div id={"output-pietemp"} class="temp-text text">{ format!("Pietemp: {}", *pietemp) }</div>
                 // Slider, oninput runs the calculation code when moved
                 <input class="slider" type="range" min="-50" max="200" name={"slider"} oninput={oninput} />
             </div>
         </div>
     }
-}
-
-// Where the app starts and runs the code.
-fn main() {
-    yew::Renderer::<App>::new().render();
 }

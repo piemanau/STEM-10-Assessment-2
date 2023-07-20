@@ -3,7 +3,7 @@ use fancy_regex::Regex;
 use gloo::{console::warn, utils::document};
 use yew::{function_component, html, Callback, Html, Properties};
 
-use crate::{runFitText, Operation, OuterValue, Value};
+use crate::projects::basic_calculator::{runFitText, Operation, OuterValue, Value};
 
 // Parameters I can pass in to use for each individual button
 #[derive(Properties, PartialEq, Clone)]

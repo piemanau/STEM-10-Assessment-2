@@ -2,7 +2,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use yew::html;
 use yew::prelude::*;
 
-use crate::components::button::Button;
+use components::button::Button;
 
 mod components;
 
@@ -34,8 +34,8 @@ pub enum OuterValue {
     Value(Value),
 }
 
-#[function_component]
-fn App() -> Html {
+#[function_component(BasicCalculator)]
+pub(crate) fn basic_calculator() -> Html {
     html! {
         // Outer div, mainly for centering, see the scss
         <div class="calculator center">
@@ -73,12 +73,7 @@ fn App() -> Html {
 }
 
 // Lets me run JS to fit the text properly
-#[wasm_bindgen(module = "/resizetext.js")]
+#[wasm_bindgen(module = "/scripts/resizetext.js")]
 extern "C" {
     fn runFitText();
-}
-
-// Where the app starts and runs the code.
-fn main() {
-    yew::Renderer::<App>::new().render();
 }

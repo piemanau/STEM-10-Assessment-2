@@ -1,0 +1,42 @@
+name: Publish gh pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # configure the environment
+    - uses: actions/checkout@v3
+    
+    - name: Get the Tust Toolchain
+      uses: actions-rs/toolchain@v1.0.6
+      with:
+        toolchain: stable
+        target: wasm32-unknown-unknown
+    
+    - name: Get Trunk
+      uses: jetli/trunk-action@v0.1.0
+
+    - name: Build Site with Trunk
+      run: trunk build --release -d at2 --filehash false
+
+    - name: Optimize Wasm Size
+      uses: NiklasEi/wasm-opt-action@v2
+      with:
+        file: "at2/stem_10_assessment_2_bg.wasm"
+        output: "at2/stem_10_assessment_2_bg.wasm"
+
+    - name: Deploy to website
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSHKEY }}
+        source: "./at2"
+        target: "/var/www/school.pieman.dev/html/10/stem/"

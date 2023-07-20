@@ -200,6 +200,12 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.center-horizontally {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
 // Setting up the names for the grid
 .zero { grid-area: zero;}
 .one { grid-area: one;}
@@ -222,3 +228,153 @@ body {
 .modulo { grid-area: modulo;}
 .openbracket { grid-area: openbracket;}
 .closebracket { grid-area: closebracket;}
+
+// Set background colour over the entire screen
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: #1a2238;
+}
+
+// Changes styling for the base converters inner sections like inputs and labels
+.inner-input {
+  width: 40vmin;
+  height: 10vmin;
+  font-size: 4vmin;
+  font-weight: bold;
+  padding: 0vmin;
+  padding-left: 1vmin;
+  padding-right: 1vmin;
+  margin: 0.25vmin;
+  border: none;
+  background-color: #1a2238;
+  color: #9db4f2;
+  font-family: sans-serif;
+}
+
+// Styling for all buttons
+.base-button {
+  a {
+      text-decoration: none;
+  }
+  border: none;
+  margin: none;
+  padding: none;
+  color: #9db4f2;
+  background-color: #1a2238;
+
+  &:hover {
+      cursor: pointer;
+  }
+}
+
+// Styling for buttons and innerinputs, must have both classes
+.base-button.inner-input {
+  width: 79.5vmin;
+}
+
+// Styling for buttons that dont have the innerinput class, on the instructions screen
+.base-button:not(.inner-input) {
+  height: 5vmin;
+  width: 100%;
+  font-size: 1.75vmin;
+  border: #37448c solid 0.5vmin;
+}
+
+// Styling for text, colour, size, etc
+.base-text {
+  color: #9db4f2;
+  font-size: 1.75vmin;
+  font-family: sans-serif;
+}
+
+// Styling for the headers
+.header {
+  color: #9db4f2;
+  font-size: 4vmin;
+  font-family: sans-serif;
+}
+
+// Styling for the container, centering etc
+.container {
+  height: inherit;
+  outline: solid 1px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Setting the background colour of the base converter to show distinction from the background
+.background {
+  background-color: #37448c;
+  padding: 0.25vmin;
+}
+
+// Sets up a basic textformatting, colour, size, font family and left align
+.temp-text {
+  font-size: 9vmin;
+}
+
+// Change pointer type on hover over the slider
+.slider:hover {
+  cursor: pointer;
+}
+
+// Aligns slider to the center and makes it 100% of the width of the parent element
+.slider {
+align-self: center;
+width: 100%;
+}
+
+// Any input with type range it removes the background
+input[type="range"] {
+  background: none;
+}
+
+// Makes the slider track look better on firefox
+input[type=range]::-moz-range-track {
+  background: #37448c;
+  outline: none;
+  overflow: hidden;
+  border: solid #37448c;
+  border-width: 6px;
+  border-radius: 30px;
+  appearance: none;
+  cursor: pointer;
+}
+
+// Makes the slider thumb look better on firefox
+input[type=range]::-moz-range-thumb {
+  background: #9db4f2;
+  border: none;
+}
+
+// Makes the slider progress look better on firefox
+input[type=range]::-moz-range-progress {
+  border: 0;
+  height: 2px;
+  outline: none;
+}
+
+// 90% of the viewport minimun and centers
+.inner {
+  width: 90vmin;
+  align-content: center;
+}
+
+.basic-input {
+  border: none;
+  background-color: #37448c;
+}
+
+.home-button {
+  width: 19.6%;
+  margin: .2%;
+  height: 60px;
+  border: 2px solid #37448c;
+  background-color: #1a2238;
+  color: #9db4f2;
+  :hover {
+    cursor: pointer;
+  }
+}

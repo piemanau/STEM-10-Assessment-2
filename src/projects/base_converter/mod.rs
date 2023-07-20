@@ -6,16 +6,9 @@ use yew_router::prelude::*;
 
 mod components;
 
-use crate::components::number_input::*;
+use components::number_input::*;
 
-// Specifies what path of the URL points to each arm in the enum
-#[derive(Clone, Routable, PartialEq)]
-enum Route {
-    #[at("/")]
-    Home,
-    #[at("/instructions")]
-    Instructions,
-}
+use crate::Route;
 
 // Output for each of the inputs
 #[derive(PartialEq, Clone)]
@@ -23,39 +16,9 @@ pub enum Output {
     Value(String),
 }
 
-// Gets the url and runs the relevant code
-fn switch(routes: Route) -> Html {
-    match routes {
-        // If it is at "home" it renders the home code
-        Route::Home => home(),
-        // If it is at intructions it will render the instructions
-        Route::Instructions => html! {
-            // Instruction elements
-            <div class="container">
-                <div>
-                    <h1 class="header">{"Base Converter Instructions"}</h1>
-                    <p class="text">{"Number one and number two are the numbers you are converting to and from."}</p>
-                    <p class="text">{"Base in and base out are the bases you are converting to and from, base 10 to base 2 is decimal to binary."}</p>
-                    <p class="text">{"Base key in and base key out are the \"keys\" you use to convert to and from. "}<br/><br/>{"\"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
-                    <Link<Route> to={Route::Home}><button class="button">{ "Go to converter" }</button></Link<Route>>
-                </div>
-            </div>
-        },
-    }
-}
-
-// Where the main function calls, it calles the switch function
-#[function_component]
-fn App() -> Html {
-    html! {
-        <HashRouter>
-            <Switch<Route> render={switch} />
-        </HashRouter>
-    }
-}
-
 // The "home" function, the code where the converter is
-fn home() -> Html {
+#[function_component(BaseConverter)]
+pub(crate) fn base_converter() -> Html {
     html! {
         <div class="container">
             <div class="background">
@@ -67,15 +30,26 @@ fn home() -> Html {
                 <NumberInput name="Base Out" value="2" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
                 <NumberInput name="Base Key Out" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" output={Output::Value(String::from("Both NumberOne NumberTwo"))}/>
                 // Button to go to the intructions
-                <Link<Route> to={Route::Instructions}><button class="button inner-input">{ "Go to instructions" }</button></Link<Route>>
+                <Link<Route> to={Route::BaseConverterInstructions}><button class="base-button inner-input">{ "Go to instructions" }</button></Link<Route>>
             </div>
         </div>
     }
 }
 
-// Where the code starts, runs the app
-fn main() {
-    yew::Renderer::<App>::new().render();
+// The "instructions" function, where the instructions are located
+#[function_component(BaseConverterInstructions)]
+pub(crate) fn instructions() -> Html {
+    html! {
+        <div class="container">
+                <div>
+                    <h1 class="header">{"Base Converter Instructions"}</h1>
+                    <p class="base-text">{"Number one and number two are the numbers you are converting to and from."}</p>
+                    <p class="base-text">{"Base in and base out are the bases you are converting to and from, base 10 to base 2 is decimal to binary."}</p>
+                    <p class="base-text">{"Base key in and base key out are the \"keys\" you use to convert to and from. "}<br/><br/>{"\"A\" in base 11 is 10 by default but if you change the 11th index to \"B\", 10 would be equal to \"B\" instead of \"A\"."}</p>
+                    <Link<Route> to={Route::BaseConverter}><button class="base-button">{ "Go to converter" }</button></Link<Route>>
+                </div>
+            </div>
+    }
 }
 
 // Converts from base 10
@@ -137,7 +111,7 @@ fn convert_from_base_to_base(
     )
 }
 
-#[wasm_bindgen(module = "/updatevalue.js")]
+#[wasm_bindgen(module = "/scripts/updatevalue.js")]
 extern "C" {
     fn updateValue(element: Element, value: String);
 }

@@ -3,7 +3,7 @@ use wasm_bindgen::JsCast;
 use web_sys::{HtmlInputElement, InputEvent};
 use yew::{function_component, html, Callback, Html, Properties};
 
-use crate::{convert_from_base_to_base, updateValue, Output};
+use crate::projects::base_converter::{convert_from_base_to_base, updateValue, Output};
 
 // Properties passed in when adding the component to HTML
 #[derive(Properties, PartialEq)]

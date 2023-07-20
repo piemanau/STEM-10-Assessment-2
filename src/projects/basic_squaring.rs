@@ -2,8 +2,8 @@ use wasm_bindgen::JsCast;
 use web_sys::{InputEvent, HtmlInputElement};
 use yew::{function_component, Html, Callback, html, use_state};
 
-#[function_component]
-fn App() -> Html {
+#[function_component(BasicSquaring)]
+pub(crate) fn basic_squaring() -> Html {
     
     // Value that goes on the output element
     let value = use_state(|| 0);
@@ -36,19 +36,13 @@ fn App() -> Html {
 
     // Html for title, input and output
     html! {
-        <div>
+        <div class="center">
             // Header (title)
-            <h1>{"Squaring Calculator"}</h1>
+            <h1 class="header">{"Squaring Calculator"}</h1>
             // Input element, calls input when it gets some input
-            <input type="number" name={"input"} {oninput} placeholder="Number"/>
+            <input type="text" class="basic-input base-text" name={"input"} {oninput} placeholder="Number"/>
             // Output element, dereference the value
-            <div id="output">{ *value }</div>
+            <div id="output" class="base-text">{ *value }</div>
         </div>
     }
-}
-
-
-// Main function, where the code starts and runs the app.
-fn main() {
-    yew::Renderer::<App>::new().render();
 }
